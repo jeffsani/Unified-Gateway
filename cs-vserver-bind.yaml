@@ -1,0 +1,169 @@
+--- 
+name: cs-vserver-bind
+namespace: com.citrix.adc.stylebooks
+version: "1.0"
+description: "This StyleBook is defined to create and bind a set of CS Policies to an existing CS Vserver."
+private: true
+schema-version: "1.0"
+import-stylebooks: 
+  - 
+    namespace: netscaler.nitro.config
+    prefix: ns
+    version: "12.0"
+  - 
+    namespace: com.citrix.adc.commontypes
+    prefix: cmtypes
+    version: "1.0"
+  - 
+    namespace: com.citrix.adc.stylebooks
+    prefix: stlb
+    version: "1.0"
+substitutions: 
+  cs-actionname(poolname): $parameters.csvserver-name + "-" + $poolname + "-csaction"
+  cs-policyname(poolname): $parameters.csvserver-name + "-" + $poolname + "-cspol"
+  cspol-priority(priority): 10100 - 100 * int($priority)
+  lbname-from-poolname(poolname): $parameters.csvserver-name + "-" + $poolname + "-lb"
+parameters: 
+  - 
+    name: csvserver-name
+    description: "Name of the Content Switched application to which policies are bound"
+    label: "Content Switched App Name"
+    type: string
+    key: true
+    required: true
+  - 
+    name: vserver-name
+    label: "Content Switch App Server Default LB VServer"
+    description: "Details of the Default LBVServer for this application."
+    type: string
+    required: true
+  - 
+    name: vserver-type
+    label: "type of vserver bound to the CS vserver"
+    type: string
+    allowed-values:
+      - LBVSERVER
+      - VPNVSERVER
+      - GSLBVSERVER
+    required: true
+  - 
+    name: is-default
+    label: "Is Default"
+    description: "Is this the Default LB Vserver for Content-Switching?"
+    type: boolean
+    default: false
+  - 
+    name: pool
+    label: "Server Pool"
+    description: "Details of Server pool for this application."
+    type: cmtypes::cs-pool
+components: 
+  - 
+    name: cs-defaultlb-bind-comp
+    condition: $parameters.vserver-type == LBVSERVER and $parameters.is-default 
+    type: ns::csvserver_lbvserver_binding
+    description: "This component binds the default LB vserver to the CS vserver"
+    properties: 
+      name: $parameters.csvserver-name
+      lbvserver: $parameters.vserver-name
+  - 
+    name: csaction-comp
+    type: ns::csaction 
+    condition: $parameters.vserver-type == LBVSERVER and not $parameters.is-default
+    properties: 
+      name: $substitutions.cs-actionname($parameters.pool.lb-pool.lb-appname)
+      targetlbvserver: $parameters.vserver-name
+  - 
+    name: cspolicy-lb-comp
+    type: ns::cspolicy
+    condition: $parameters.vserver-type == LBVSERVER and not $parameters.is-default
+    properties: 
+      policyname: $substitutions.cs-policyname($parameters.pool.lb-pool.lb-appname)
+      rule: $parameters.pool.rule
+      action: $components.csaction-comp.properties.name
+  - 
+    name: cspolicy-lb-binding-comp
+    type: ns::csvserver_cspolicy_binding  
+    condition: $parameters.vserver-type == LBVSERVER and not $parameters.is-default
+    properties: 
+      name: $parameters.csvserver-name
+      policyname: $components.cspolicy-lb-comp.properties.policyname
+      priority: $substitutions.cspol-priority($parameters.pool.priority)
+  - 
+    name: cs-defaultvpn-bind-comp
+    condition: $parameters.vserver-type == VPNVSERVER and $parameters.is-default 
+    type: ns::csvserver_vpnvserver_binding
+    description: "This component binds the default VPN vserver to the CS vserver"
+    properties: 
+      name: $parameters.csvserver-name
+      vserver: $parameters.vserver-name
+  - 
+    name: csaction-vpn-comp
+    type: ns::csaction 
+    condition: $parameters.vserver-type == VPNVSERVER and not $parameters.is-default
+    properties: 
+      name: $substitutions.cs-actionname($parameters.pool.lb-pool.lb-appname)
+      targetvserver: $parameters.vserver-name
+  - 
+    name: cspolicy-vpn-comp
+    type: ns::cspolicy
+    condition: $parameters.vserver-type == VPNVSERVER and not $parameters.is-default
+    properties: 
+      policyname: $substitutions.cs-policyname($parameters.pool.lb-pool.lb-appname)
+      rule: $parameters.pool.rule
+      action: $components.csaction-vpn-comp.properties.name
+  - 
+    name: cspolicy-vpn-binding-comp
+    type: ns::csvserver_cspolicy_binding  
+    condition: $parameters.vserver-type == VPNVSERVER and not $parameters.is-default
+    properties: 
+      name: $parameters.csvserver-name
+      policyname: $components.cspolicy-vpn-comp.properties.policyname
+      priority: $substitutions.cspol-priority($parameters.pool.priority)
+  - 
+    name: cs-defaultgslb-bind-comp
+    condition: $parameters.vserver-type == GSLBVSERVER and $parameters.is-default 
+    type: ns::csvserver_gslbvserver_binding
+    description: "This component binds the default GSLB vserver to the CS vserver"
+    properties: 
+      name: $parameters.csvserver-name
+      vserver: $parameters.vserver-name
+  - 
+    name: csaction-gslb-comp
+    type: ns::csaction 
+    condition: $parameters.vserver-type == GSLBVSERVER and not $parameters.is-default
+    properties: 
+      name: $substitutions.cs-actionname($parameters.pool.lb-pool.lb-appname)
+      targetvserver: $parameters.vserver-name
+  - 
+    name: cspolicy-gslb-comp
+    type: ns::cspolicy
+    condition: $parameters.vserver-type == GSLBVSERVER and not $parameters.is-default
+    properties: 
+      policyname: $substitutions.cs-policyname($parameters.pool.lb-pool.lb-appname)
+      rule: $parameters.pool.rule
+      action: $components.csaction-gslb-comp.properties.name
+  - 
+    name: cspolicy-gslb-binding-comp
+    type: ns::csvserver_cspolicy_binding  
+    condition: $parameters.vserver-type == GSLBVSERVER and not $parameters.is-default
+    properties: 
+      name: $parameters.csvserver-name
+      policyname: $components.cspolicy-gslb-comp.properties.policyname
+      priority: $substitutions.cspol-priority($parameters.pool.priority)
+outputs: 
+  - 
+    name: cs-lb-policy 
+    condition: $parameters.vserver-type == LBVSERVER 
+    description: "Exposes the default LB virtual server"
+    value: $components.cspolicy-lb-comp
+  - 
+    name: cs-vpn-policy 
+    condition: $parameters.vserver-type == VPNVSERVER 
+    description: "Exposes the default VPN virtual server"
+    value: $components.cspolicy-vpn-comp
+  - 
+    name: cs-gslb-policy 
+    condition: $parameters.vserver-type == GSLBVSERVER 
+    description: "Exposes the default GSLB virtual server"
+    value: $components.cspolicy-gslb-comp
