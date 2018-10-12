@@ -125,19 +125,19 @@ parameters:
         description: The Active Directory LDAP Bind DN Password string for authentication
         type: password
         required: true
-  -
-    name: otp-settings
-    label: NS OTP Auth Settings
-    description: Enable or disable multifactor auth with built-in NS OTP
-    type: object
-    parameters:
-      -
-        name: otp-attribute-name
-        label: One-Time-Passcode Attribute Name
-        description: User Attribute which stores the registered TOTP device ids
-        type: string
-        default: userParameters
-        required: true
+      - 
+        name: otp-settings
+        label: NS OTP Auth Settings
+        description: Enable or disable multifactor auth with built-in NS OTP
+        type: object
+        parameters:
+        -
+         name: otp-attribute-name
+         label: One-Time-Passcode Attribute Name
+         description: User Attribute which stores the registered TOTP device ids
+         type: string
+         default: userParameters
+         required: true
   -
     name: storefront-settings
     label: StoreFront Settings
