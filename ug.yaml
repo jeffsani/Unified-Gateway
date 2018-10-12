@@ -59,7 +59,8 @@ parameters:
     description: |
      <h1>LDAP Authentication</h1>
      These inputs define an LDAP authentication with optional NS OTP MFA. You will need to know the user and password of a bind account for LDAP |
-     that has sufficient priviledges to access user attributes
+     that has sufficient priviledges to access user attributes.  Please refer to the Citrix documentation for more information - |
+     <a href="https://support.citrix.com/article/CTX108876" target="_blank">How to Configure LDAP Authentication on NetScaler or NetScaler Gateway</a>
     type: object
     required: true
     parameters:
@@ -144,7 +145,8 @@ parameters:
     description: |
      <h1>Citrix Store Details</h1>
      These inputs are required for the StoreFront and DDC load balancing components. Please refer to the Citrix documentation |
-     that explains the requirements and options - <a href="https://docs.citrix.com/en-us/storefront/current-release/integrate-with-netscaler-and-netscaler-gateway/load-balancing-with-netscaler.html"> StoreFront documentation </a>
+     that explains the requirements and options - <a href="https://docs.citrix.com/en-us/storefront/current-release/integrate-with-netscaler-and-netscaler-gateway/load-balancing-with-netscaler.html" target="_blank">|
+     StoreFront documentation </a>
     type: object
     required: true
     parameters:
