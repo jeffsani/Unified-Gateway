@@ -198,7 +198,6 @@ parameters:
       -
         name: sf-monitor-acctsvcs
         label: Monitor Account Services
-        description: Specify whether to monitor Store Account Services
         type: object
       -
         name: session-timeout
