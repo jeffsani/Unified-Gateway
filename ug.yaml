@@ -105,7 +105,7 @@ parameters:
         description: Timeout period in minutes after login failure before allowing user to try again
         type: number
         default: 1
-        required: true 
+        required: true
       - 
         name: base-dn
         label: LDAP Base DN
@@ -153,7 +153,7 @@ parameters:
         label: StoreFront Server(s)
         description: StoreFront Server IPs and Ports
         type: cmtypes::server-ip-port-params[]
-        required: true    
+        required: true
       -
         name: sf-svc-protocol
         label: StoreFront Protocol
@@ -170,7 +170,7 @@ parameters:
         label: DDC Server(s)
         description: Delivery Controller Server IPs and Ports
         type: cmtypes::server-ip-port-params[]
-        required: true 
+        required: true
       -
         name: ddc-svc-protocol
         label: DDC Protocol
@@ -249,20 +249,21 @@ parameters:
           description: Time Period in s during which notification is sent 
           type: number
           default: 60
-          required: true        
+          required: true
          -
           name: l7latencymaxnotifycount
           label: L7 Latency Max Notify Count
           description: Max number of notifications to be sent
           type: number
           default: 1
-          required: true        
+          required: true
 components:
   - 
     name: sf-ica-latency-comp
     type: ns::icalatencyprofile
     description: This component creates an ICA Latency Profile for use with Citrix ADM
     properties:
+      name: str("ica_l7_profile_") + $parameters.appname
       l7latencymonitoring: "ENABLED"
       l7latencythresholdfactor: $parameters.sf-ica-latency-profile.l7latencythresholdfactor
       l7latencywaittime: $parameters.sf-ica-latency-profile.l7latencywaittime
