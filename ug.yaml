@@ -210,7 +210,64 @@ parameters:
         type: number
         default: 30
         required: true
+      - 
+        name: sf-edt-proxy
+        label: Enable EDT Proxy Support
+        description: |
+         Enable support for HDX Enlightened Data Transport - this is recommended.  |
+         For more information refer to the |
+         <a href="https://docs.citrix.com/en-us/netscaler-gateway/12-1/hdx-enlightened-data-transport-support.html" |
+         target=_blank>documentation</a>
+        type: object
+      -  
+        name: sf-ica-latency-profile
+        label: Create ICA Latency Profile
+        description: |
+         Create an ICA Latency Profile - this is optional but recommended for more accurate analytics in Citrix ADM.  |
+         For more information refer to the |
+         <a href="https://docs.citrix.com/en-us/netscaler/12/load-balancing/load-balancing-builtin-monitors/monitor-citrix-sf-services.html" |
+         target=_blank>documentation</a>
+        type: object
+        parameters:
+         -
+          name: l7latencythresholdfactor
+          label: L7 Latency Threshold Factor
+          description: Threshold in ms for when condition should be triggered 
+          type: number
+          default: 125
+          required: true
+         -
+          name: l7latencywaittime
+          label: L7 Latency Wait Time
+          description: Timeslice in s for duration of threshold violation to create trigger
+          type: number
+          default: 15
+          required: true
+         -
+          name: l7latencynotifyinterval
+          label: L7 Latency Notify Interval
+          description: Time Period in s during which notification is sent 
+          type: number
+          default: 60
+          required: true        
+         -
+          name: l7latencymaxnotifycount
+          label: L7 Latency Max Notify Count
+          description: Max number of notifications to be sent
+          type: number
+          default: 1
+          required: true        
 components:
+  - 
+    name: sf-ica-latency-comp
+    type: ns::icalatencyprofile
+    description: This component creates an ICA Latency Profile for use with Citrix ADM
+    properties:
+      l7latencymonitoring: "ENABLED"
+      l7latencythresholdfactor: $parameters.sf-ica-latency-profile.l7latencythresholdfactor
+      l7latencywaittime: $parameters.sf-ica-latency-profile.l7latencywaittime
+      l7latencynotifyinterval: $parameters.sf-ica-latency-profile.l7latencynotifyinterval
+      l7latencymaxnotifycount: $parameters.sf-ica-latency-profile.l7latencymaxnotifycount
   - 
     name: sf-monitor-comp
     type: ns::lbmonitor
@@ -572,7 +629,8 @@ components:
       name: str("vpnv_") + $parameters.appname
       servicetype: "SSL"
       ipv46: 0.0.0.0
-      port: 0          
+      port: 0
+      dtls: if-then-else($parameters.storefront-settings.ddc-svc-protocol, "ON", "OFF")
       loginonce: "ON"
       tcpprofilename: "nstcp_internal_apps"
       authnprofile: $components.authprofile-comp.properties.name
