@@ -191,9 +191,9 @@ parameters:
       -
         name: sf-path
         label: StoreFront RfW URL
-        description: URL Path to Receiver for Web
+        description: URL for StoreFront to be used in this session for enumeration of resources from XenApp or XenDesktop
         type: string
-        default: "/Citrix/Store/"
+        default: str("/Citrix/Store/")
         required: true
       -
         name: sf-monitor-acctsvcs
@@ -410,7 +410,7 @@ components:
     name: auth-ldap-otp-comp
     type: ns::authenticationldapaction
     description: This component creates the LDAP Auth Action config entity for OTP Auth
-    condition: $parameters.otp-settings
+    condition: $parameters.auth-settings.otp-settings
     properties:
         name: $parameters.appname + "_ldap-otp-act"
         serverip: $parameters.auth-settings.server-ip
@@ -426,7 +426,7 @@ components:
         ldapbinddn: $parameters.auth-settings.bind-dn
         ldapbinddnpassword: $parameters.auth-settings.bind-dn-password
         authentication: "DISABLED"
-        otpsecret: $parameters.otp-settings.otp-attribute-name
+        otpsecret: $parameters.auth-settings.otp-settings.otp-attribute-name
   -
     name: auth-ldap-policy-comp
     type: ns::authenticationldappolicy
@@ -439,7 +439,7 @@ components:
     name: auth-ldap-otp-policy-comp
     type: ns::authenticationldappolicy
     description: This component creates the LDAP OTP Auth Policy config entity
-    condition: $parameters.otp-settings
+    condition: $parameters.auth-settings.otp-settings
     properties:
         name: $parameters.appname + "_ldap-otp-pol"
         rule: str("true")
@@ -448,7 +448,7 @@ components:
     name: loginschema-comp
     type: ns::authenticationloginschema
     description: This component creates a login schema for a single auth factor
-    condition: not $parameters.otp-settings
+    condition: not $parameters.auth-settings.otp-settings
     properties:
         name: $parameters.appname + "_factor0_schema"
         authenticationschema: str("/nsconfig/loginschema/LoginSchema/SingleAuth.xml")
@@ -457,7 +457,7 @@ components:
     name: loginschema-otp-comp
     type: ns::authenticationloginschema
     description: This component creates a login schema for multi-factor auth with NS OTP
-    condition: $parameters.otp-settings
+    condition: $parameters.auth-settings.otp-settings
     properties:
         name: $parameters.appname + "_factor0_schema"
         authenticationschema: str("/nsconfig/loginschema/LoginSchema/DualAuth.xml")
@@ -503,7 +503,7 @@ components:
        name: auth-vserver-ldap-policy-bind-comp
        type: ns::authenticationvserver_authenticationpolicy_binding
        description: This component binds the LDAP Auth Policy to the Auth VServer
-       condition: not $parameters.otp-settings
+       condition: not $parameters.auth-settings.otp-settings
        properties:
            name: $parent.properties.name
            policy: $components.auth-ldap-policy-comp.properties.name
@@ -512,7 +512,7 @@ components:
        name: auth-vserver-otp-policy-bind-comp
        type: ns::authenticationvserver_authenticationpolicy_binding
        description: This component binds the LDAP Auth Policy to the Auth VServer
-       condition: $parameters.otp-settings
+       condition: $parameters.auth-settings.otp-settings
        properties:
            name: $parent.properties.name
            policy: $components.auth-ldap-otp-comp.properties.name
@@ -522,7 +522,7 @@ components:
        name: auth-vserver-logonschema-bind-comp
        type: ns::authenticationvserver_authenticationloginschemapolicy_binding
        description: This component binds the factor0 loginschema to the Auth VServer
-       condition: not $parameters.otp-settings
+       condition: not $parameters.auth-settings.otp-settings
        properties:
            name: $parent.properties.name
            policy: $components.loginschema-policy-comp.properties.name
@@ -531,7 +531,7 @@ components:
        name: auth-vserver-otp-logonschema-bind-comp
        type: ns::authenticationvserver_authenticationloginschemapolicy_binding
        description: This component binds the factor0 loginschema to the Auth VServer for LDAP+OTP
-       condition: $parameters.otp-settings
+       condition: $parameters.auth-settings.otp-settings
        properties:
            name: $parent.properties.name
            policy: $components.loginschema-otp-policy-comp.properties.name 
@@ -540,7 +540,7 @@ components:
     name: auth-label-factor1
     type: ns::authenticationpolicylabel
     description: This component creates the aaa policy label for factor1
-    condition: $parameters.otp-settings
+    condition: $parameters.auth-settings.otp-settings
     properties:
        labelname: $parameters.appname + "_nfactor_factor1"
        loginschema: str("LSCHEMA_INT")
