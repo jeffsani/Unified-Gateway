@@ -193,7 +193,7 @@ parameters:
         label: StoreFront RfW URL
         description: URL for StoreFront to be used in this session for enumeration of resources from XenApp or XenDesktop
         type: string
-        default: str("/Citrix/Store/")
+        default: "/Citrix/Store/"
         required: true
       -
         name: sf-monitor-acctsvcs
