@@ -55,9 +55,9 @@ parameters:
     type: "cmtypes::certificate[]"
   -
     name: auth-settings
-    label: Authentication VServer Settings
+    label: nFactor Authentication Settings
     description: |
-     <h1> Details </h1>
+     <h1>LDAP Authentication</h1>
      These inputs define an LDAP authentication with optional NS OTP MFA. You will need to know the user and password of a bind account for LDAP |
      that has sufficient priviledges to access user attributes
     type: object
@@ -127,8 +127,8 @@ parameters:
         required: true
       - 
         name: otp-settings
-        label: NS OTP Auth Settings
-        description: Enable or disable multifactor auth with built-in NS OTP
+        label: Multi-factor Authentication
+        description: Enable or disable multi-factor auth with built-in NS OTP
         type: object
         parameters:
          -
@@ -142,7 +142,7 @@ parameters:
     name: storefront-settings
     label: StoreFront Settings
     description: |
-     <h1> Details </h1>
+     <h1>Citrix Store Details</h1>
      These inputs are required for the StoreFront and DDC load balancing components. Please refer to the Citrix documentation |
      that explains the requirements and options - <a href="https://docs.citrix.com/en-us/storefront/current-release/integrate-with-netscaler-and-netscaler-gateway/load-balancing-with-netscaler.html"> StoreFront documentation </a>
     type: object
@@ -198,6 +198,10 @@ parameters:
       -
         name: sf-monitor-acctsvcs
         label: Monitor Account Services
+        description: |
+         Enable or disable StoreFront Account Services Monitoring - this is optional but recommended.  For more information refer to the |
+         <a href="https://docs.citrix.com/en-us/netscaler/12/load-balancing/load-balancing-builtin-monitors/monitor-citrix-sf-services.html" |
+         target=_blank>documentation</a>
         type: object
       -
         name: session-timeout
