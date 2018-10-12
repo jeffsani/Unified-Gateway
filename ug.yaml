@@ -109,13 +109,13 @@ parameters:
       - 
         name: base-dn
         label: LDAP Base DN
-        description: The Active Directory LDAP Base string for authentication
+        description: The Active Directory LDAP Base Search DN - i.e. ou=MyOU,dc=domain,dc=local
         type: string
         required: true
       -
         name: bind-dn
         label: LDAP Bind DN
-        description: The Active Directory LDAP Bind string for authentication
+        description: The Active Directory LDAP Bind string for authentication - i.e. ldap-svc-acct@domain.local
         type: string
         default: "administrator@domain.local"
         required: true
@@ -131,13 +131,13 @@ parameters:
         description: Enable or disable multifactor auth with built-in NS OTP
         type: object
         parameters:
-        -
-         name: otp-attribute-name
-         label: One-Time-Passcode Attribute Name
-         description: User Attribute which stores the registered TOTP device ids
-         type: string
-         default: userParameters
-         required: true
+         -
+          name: otp-attribute-name
+          label: One-Time-Passcode Attribute Name
+          description: User Attribute which stores the registered TOTP device ids
+          type: string
+          default: userParameters
+          required: true
   -
     name: storefront-settings
     label: StoreFront Settings
