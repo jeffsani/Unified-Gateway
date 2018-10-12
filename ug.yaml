@@ -191,9 +191,9 @@ parameters:
       -
         name: sf-path
         label: StoreFront RfW URL
-        description: URL for StoreFront to be used in this session for enumeration of resources from XenApp or XenDesktop
+        description: URL Path to Receiver for Web
         type: string
-        default: str("/Citrix/Store/")
+        default: "/Citrix/Store/"
         required: true
       -
         name: sf-monitor-acctsvcs
