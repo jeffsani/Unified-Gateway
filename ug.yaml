@@ -58,8 +58,8 @@ parameters:
     label: nFactor Authentication Settings
     description: |
      <h1>LDAP Authentication</h1>
-     These inputs define an LDAP authentication with optional NS OTP MFA. You will need to know the user and password of a bind account for LDAP |
-     that has sufficient priviledges to access user attributes.  Please refer to the Citrix documentation for more information - |
+     These inputs define an LDAP authentication with optional NS OTP MFA. You will need to know the user and password of a bind account for LDAP 
+     that has sufficient priviledges to access user attributes.  Please refer to the Citrix documentation for more information - 
      <a href="https://support.citrix.com/article/CTX108876" target="_blank">How to Configure LDAP Authentication on NetScaler or NetScaler Gateway</a>
     type: object
     required: true
@@ -144,8 +144,8 @@ parameters:
     label: StoreFront Settings
     description: |
      <h1>Citrix Store Details</h1>
-     These inputs are required for the StoreFront and DDC load balancing components. Please refer to the Citrix documentation |
-     that explains the requirements and options - <a href="https://docs.citrix.com/en-us/storefront/current-release/integrate-with-netscaler-and-netscaler-gateway/load-balancing-with-netscaler.html" target="_blank">|
+     These inputs are required for the StoreFront and DDC load balancing components. Please refer to the Citrix documentation 
+     that explains the requirements and options - <a href="https://docs.citrix.com/en-us/storefront/current-release/integrate-with-netscaler-and-netscaler-gateway/load-balancing-with-netscaler.html" target="_blank">
      StoreFront documentation </a>
     type: object
     required: true
@@ -201,9 +201,8 @@ parameters:
         name: sf-monitor-acctsvcs
         label: Monitor Account Services
         description: |
-         Enable or disable StoreFront Account Services Monitoring - this is optional but recommended.  For more information refer to the |
-         <a href="https://docs.citrix.com/en-us/netscaler/12/load-balancing/load-balancing-builtin-monitors/monitor-citrix-sf-services.html" |
-         target=_blank>documentation</a>
+         Enable or disable StoreFront Account Services Monitoring - this is optional but recommended.  For more information refer to the 
+         <a href="https://docs.citrix.com/en-us/netscaler/12/load-balancing/load-balancing-builtin-monitors/monitor-citrix-sf-services.html" target="_blank">documentation</a>
         type: object
       -
         name: session-timeout
@@ -216,19 +215,17 @@ parameters:
         name: sf-edt-proxy
         label: Enable EDT Proxy Support
         description: |
-         Enable support for HDX Enlightened Data Transport - this is recommended.  |
-         For more information refer to the |
-         <a href="https://docs.citrix.com/en-us/netscaler-gateway/12-1/hdx-enlightened-data-transport-support.html" |
-         target=_blank>documentation</a>
+         Enable support for HDX Enlightened Data Transport - this is recommended. For more information refer to the 
+         <a href="https://docs.citrix.com/en-us/netscaler-gateway/12-1/hdx-enlightened-data-transport-support.html" 
+         target="_blank">documentation</a>
         type: object
       -  
         name: ica-latency-profile
         label: Create ICA Latency Profile
         description: |
-         Create an ICA Latency Profile - this is optional but recommended for more accurate analytics in Citrix ADM.  |
-         For more information refer to the |
-         <a href="https://docs.citrix.com/en-us/netscaler/12/load-balancing/load-balancing-builtin-monitors/monitor-citrix-sf-services.html" |
-         target=_blank>documentation</a>
+         Create an ICA Latency Profile - this is optional but recommended for more accurate analytics in Citrix ADM.  
+         For more information refer to the <a href="https://docs.citrix.com/en-us/netscaler/12/load-balancing/load-balancing-builtin-monitors/monitor-citrix-sf-services.html" |
+         target="_blank">documentation</a>
         type: object
         parameters:
          -
