@@ -222,7 +222,7 @@ parameters:
          target=_blank>documentation</a>
         type: object
       -  
-        name: sf-ica-latency-profile
+        name: ica-latency-profile
         label: Create ICA Latency Profile
         description: |
          Create an ICA Latency Profile - this is optional but recommended for more accurate analytics in Citrix ADM.  |
@@ -261,16 +261,16 @@ parameters:
           required: true
 components:
   - 
-    name: sf-ica-latency-comp
+    name: ica-latency-comp
     type: ns::icalatencyprofile
     description: This component creates an ICA Latency Profile for use with Citrix ADM
     properties:
       name: str("ica_l7_profile_") + $parameters.appname
       l7latencymonitoring: "ENABLED"
-      l7latencythresholdfactor: $parameters.sf-ica-latency-profile.l7latencythresholdfactor
-      l7latencywaittime: $parameters.sf-ica-latency-profile.l7latencywaittime
-      l7latencynotifyinterval: $parameters.sf-ica-latency-profile.l7latencynotifyinterval
-      l7latencymaxnotifycount: $parameters.sf-ica-latency-profile.l7latencymaxnotifycount
+      l7latencythresholdfactor: $parameters.storefront-settings.ica-latency-profile.l7latencythresholdfactor
+      l7latencywaittime: $parameters.storefront-settings.ica-latency-profile.l7latencywaittime
+      l7latencynotifyinterval: $parameters.storefront-settings.ica-latency-profile.l7latencynotifyinterval
+      l7latencymaxnotifycount: $parameters.storefront-settings.ica-latency-profile.l7latencymaxnotifycount
   - 
     name: sf-monitor-comp
     type: ns::lbmonitor
