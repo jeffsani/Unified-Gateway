@@ -38,7 +38,7 @@ parameters:
   -
     name: cs-virtual-ip
     label: "Unified Gateway VIP"
-    description: "Unified Gateway VServer IP Address"
+    description: "Unified Gateway Public IP Address"
     type: ipaddress
     required: true
   -
