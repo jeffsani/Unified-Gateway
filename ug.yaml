@@ -1,5 +1,5 @@
 ---
-name: ug2
+name: ug
 namespace: com.citrix.adc.stylebooks
 version: "1.0"
 display-name: "Unified Gateway"
