@@ -278,7 +278,7 @@ components:
       storename: $parameters.storefront-settings.sf-name
       dispatcherport: 8000
       storefrontacctservice: if-then-else($parameters.storefront-settings.sf-monitor-acctsvcs, "YES", "NO")
-      #secure: if-then-else($parameters.storefront-settings.sf-svc-protocol == "SSL" or $parameters.storefront-settings.sf-svc-protocol == "SSL_BRIDGE", "YES", "NO")
+      secure: if-then-else($parameters.storefront-settings.sf-svc-protocol == "SSL" or $parameters.storefront-settings.sf-svc-protocol == "SSL_BRIDGE", "YES", "NO")
   - 
     name: ddc-monitor-comp
     type: ns::lbmonitor
