@@ -66,7 +66,7 @@ parameters:
     name: auth-settings
     label: nFactor Authentication Settings
     description: |
-     <h1>LDAP Authentication</h1>
+     <h2>LDAP Authentication</h2>
      These inputs define an LDAP authentication with optional NS OTP MFA. You will need to know the user and password of a bind account for LDAP 
      that has sufficient priviledges to access user attributes.  Please refer to the Citrix documentation for more information - 
      <a href="https://support.citrix.com/article/CTX108876" target="_blank">How to Configure LDAP Authentication on NetScaler or NetScaler Gateway</a>
@@ -152,7 +152,7 @@ parameters:
     name: storefront-settings
     label: StoreFront Settings
     description: |
-     <h1>Citrix Store Details</h1>
+     <h2>Citrix Store Details</h2>
      These inputs are required for the StoreFront and DDC load balancing components. Please refer to the Citrix documentation 
      that explains the requirements and options - <a href="https://docs.citrix.com/en-us/storefront/current-release/integrate-with-netscaler-and-netscaler-gateway/load-balancing-with-netscaler.html" target="_blank">
      StoreFront documentation </a>
