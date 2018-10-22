@@ -3,7 +3,7 @@ name: ug
 namespace: com.citrix.adc.stylebooks
 version: "1.0"
 display-name: "Unified Gateway"
-description: "This stylebook creates a complete Unified Gateway configuration on 12.x with option of MFA via NS OTP.  Created entities include CS VServer, AAATM VServer, VPN VServer, LB VServers for StoreFront and DDC with monitors."
+description: "This stylebook creates a complete Unified Gateway configuration on Citrix ADC 12.x with option of MFA via NS OTP.  Created entities include CS VServer, AAATM VServer, VPN VServer, LB VServers for StoreFront/DDC with monitors, and associated policies."
 schema-version: "1.0"
 import-stylebooks: 
   -
