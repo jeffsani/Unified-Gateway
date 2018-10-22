@@ -155,7 +155,7 @@ parameters:
      <h2>Citrix Store Details</h2>
      These inputs are required for the StoreFront and DDC load balancing components. Please refer to the Citrix documentation 
      that explains the requirements and options - <a href="https://docs.citrix.com/en-us/storefront/current-release/integrate-with-netscaler-and-netscaler-gateway/load-balancing-with-netscaler.html" target="_blank">
-     StoreFront documentation </a>
+     StoreFront documentation</a>
     type: object
     required: true
     parameters:
@@ -224,15 +224,15 @@ parameters:
         name: sf-edt-proxy
         label: Enable EDT Proxy Support
         description: |
-         Enable support for HDX Enlightened Data Transport - this is recommended. For more information refer to the 
+         <h2>HDX Enlightened Data Transport</h2> This is a recommended setting and required if you want to support EDT Proxy through Citrix Gateway. For more information refer to the 
          <a href="https://docs.citrix.com/en-us/netscaler-gateway/12-1/hdx-enlightened-data-transport-support.html" 
-         target="_blank">documentation</a>
+         target="_blank">EDT Proxy documentation</a>
         type: object
       -  
         name: ica-latency-profile
         label: Create ICA Latency Profile
         description: |
-         Create an ICA Latency Profile - this is optional but recommended for more accurate analytics in Citrix ADM.  
+         <h2>ICA Latency Profile</h2> This is optional but recommended for more accurate analytics in Citrix ADM.  
          For more information refer to the <a href="https://docs.citrix.com/en-us/netscaler/12/load-balancing/load-balancing-builtin-monitors/monitor-citrix-sf-services.html" |
          target="_blank">documentation</a>
         type: object
