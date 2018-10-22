@@ -20,39 +20,48 @@ import-stylebooks:
     version: "1.0"
 parameters:
   -
-    name: appname
-    label: "Unified Gateway Name"
-    description: "Unified Gateway Application Name"
-    type: string
-    key: true
-    gui:
-      updatable: true
+    name: ug-sb
+    label: Citrix Unified Gateway 
+    description: |
+     <a href="https://www.citrix.com/products/citrix-gateway/resources/netscaler-unified-gateway.html" target="_blank"><img src="https://www.citrix.com/content/dam/citrix61/en_us/images/graphics/ns-ugw-sso.png"></a><h1>Citrix ADC Unified Gateway</h1>This stylebook creates a complete Unified Gateway configuration on 12.x with option of MFA via NS OTP.  Created entities include CS VServer, AAATM VServer, VPN VServer, LB VServers for StoreFront in accord with best practices</br>
+     fields with an * are required
+    type: object
     required: true
-  -
-    name: fqdn
-    label: "Unified Gateway FQDN"
-    description: "Fully Qualified Domain Name for external access"
-    type: string
-    default: "ug.domain.com"
-    required: true
-  -
-    name: cs-virtual-ip
-    label: "Unified Gateway VIP"
-    description: "Unified Gateway Public IP Address"
-    type: ipaddress
-    required: true
-  -
-    name: auth-domain
-    label: Authentication Domain
-    description: Authentication Cookie Domain
-    type: string
-    default: "domain.com"
-    required: true
-  -      
-    name: certificates
-    label: "SSL Certificate Settings"
-    description: "Certificates for this vpn virtual server"
-    type: "cmtypes::certificate[]"
+    parameters:
+     -
+       name: appname
+       label: "Unified Gateway Name"
+       description: "Unified Gateway Application Name"
+       type: string
+       key: true
+       gui:
+         updatable: true
+       required: true
+     -
+       name: fqdn
+       label: "Unified Gateway FQDN"
+       description: "Fully Qualified Domain Name for external access"
+       type: string
+       default: "ug.domain.com"
+       required: true
+     -
+       name: cs-virtual-ip
+       label: "Unified Gateway VIP"
+       description: "Unified Gateway Public IP Address"
+       type: ipaddress
+       required: true
+     -
+       name: auth-domain
+       label: Authentication Domain
+       description: Authentication Cookie Domain
+       type: string
+       default: "domain.com"
+       required: true
+     -      
+       name: certificates
+       label: "SSL Certificate Settings"
+       description: "Certificates for this vpn virtual server"
+       type: "cmtypes::certificate[]"
   -
     name: auth-settings
     label: nFactor Authentication Settings
@@ -262,7 +271,7 @@ components:
     type: ns::icalatencyprofile
     description: This component creates an ICA Latency Profile for use with Citrix ADM
     properties:
-      name: str("ica_l7_profile_") + $parameters.appname
+      name: str("ica_l7_profile_") + $parameters.ug-sb.appname
       l7latencymonitoring: "ENABLED"
       l7latencythresholdfactor: $parameters.storefront-settings.ica-latency-profile.l7latencythresholdfactor
       l7latencywaittime: $parameters.storefront-settings.ica-latency-profile.l7latencywaittime
@@ -273,7 +282,7 @@ components:
     type: ns::lbmonitor
     description: This component creates an lb monitor for the StoreFront service group.  This assumes the default service monitor is listening on port 8000 
     properties:
-      monitorname: str("mon_sf_") + $parameters.appname
+      monitorname: str("mon_sf_") + $parameters.ug-sb.appname
       type: "STOREFRONT"
       storename: $parameters.storefront-settings.sf-name
       dispatcherport: 8000
@@ -284,14 +293,14 @@ components:
     type: ns::lbmonitor
     description: This component creates an lb monitor for the DDC service group without an account logon check
     properties:
-      monitorname: str("mon_ddc_") + $parameters.appname
+      monitorname: str("mon_ddc_") + $parameters.ug-sb.appname
       type: "CITRIX-XD-DDC"
       secure: if-then-else($parameters.storefront-settings.ddc-svc-protocol == "SSL_BRIDGE", "YES", "NO")
   - 
     name: sf-lbvserver-comp
     type: ns::lbvserver
     properties: 
-      name: str("lbv_sf_") + $parameters.appname
+      name: str("lbv_sf_") + $parameters.ug-sb.appname
       servicetype: HTTP
       ipv46: 1.1.1.1
       port: 80
@@ -304,7 +313,7 @@ components:
         type: ns::servicegroup 
         condition: $parameters.storefront-settings.sf-servers
         properties: 
-          servicegroupname: str("svcg_") + $parameters.appname
+          servicegroupname: str("svcg_") + $parameters.ug-sb.appname
           servicetype: $parameters.storefront-settings.sf-svc-protocol
         components: 
           - 
@@ -341,7 +350,7 @@ components:
     name: ddc-lbvserver-comp
     type: ns::lbvserver
     properties: 
-      name: str("lbv_ddc_") + $parameters.appname
+      name: str("lbv_ddc_") + $parameters.ug-sb.appname
       servicetype: HTTP
       ipv46: 1.1.1.2
       port: 80
@@ -354,7 +363,7 @@ components:
         type: ns::servicegroup 
         condition: $parameters.storefront-settings.sf-servers
         properties: 
-          servicegroupname: str("svcg_") + $parameters.appname
+          servicegroupname: str("svcg_") + $parameters.ug-sb.appname
           servicetype: $parameters.storefront-settings.ddc-svc-protocol
         components: 
           - 
@@ -454,7 +463,7 @@ components:
     type: ns::authenticationldapaction
     description: This component creates the LDAP Auth Action config entity
     properties:
-        name: $parameters.appname + "_ldap-act"
+        name: $parameters.ug-sb.appname + "_ldap-act"
         serverip: $parameters.auth-settings.server-ip
         serverport: $parameters.auth-settings.server-port
         sectype: $parameters.auth-settings.bind-protocol
@@ -473,7 +482,7 @@ components:
     description: This component creates the LDAP Auth Action config entity for OTP Auth
     condition: $parameters.auth-settings.otp-settings
     properties:
-        name: $parameters.appname + "_ldap-otp-act"
+        name: $parameters.ug-sb.appname + "_ldap-otp-act"
         serverip: $parameters.auth-settings.server-ip
         serverport: $parameters.auth-settings.server-port
         sectype: $parameters.auth-settings.bind-protocol
@@ -493,7 +502,7 @@ components:
     type: ns::authenticationldappolicy
     description: This component creates the LDAP Auth Policy config entity
     properties:
-        name: $parameters.appname + "_ldap-pol"
+        name: $parameters.ug-sb.appname + "_ldap-pol"
         rule: str("true")
         reqaction: $components.auth-ldap-action-comp.properties.name
   -
@@ -502,7 +511,7 @@ components:
     description: This component creates the LDAP OTP Auth Policy config entity
     condition: $parameters.auth-settings.otp-settings
     properties:
-        name: $parameters.appname + "_ldap-otp-pol"
+        name: $parameters.ug-sb.appname + "_ldap-otp-pol"
         rule: str("true")
         reqaction: $components.auth-ldap-otp-comp.properties.name
   -
@@ -511,7 +520,7 @@ components:
     description: This component creates a login schema for a single auth factor
     condition: not $parameters.auth-settings.otp-settings
     properties:
-        name: $parameters.appname + "_factor0_schema"
+        name: $parameters.ug-sb.appname + "_factor0_schema"
         authenticationschema: str("/nsconfig/loginschema/LoginSchema/SingleAuth.xml")
         ssocredentials: "YES"
   -
@@ -520,7 +529,7 @@ components:
     description: This component creates a login schema for multi-factor auth with NS OTP
     condition: $parameters.auth-settings.otp-settings
     properties:
-        name: $parameters.appname + "_factor0_schema"
+        name: $parameters.ug-sb.appname + "_factor0_schema"
         authenticationschema: str("/nsconfig/loginschema/LoginSchema/DualAuth.xml")
         ssocredentials: "YES"
   -          
@@ -528,7 +537,7 @@ components:
     type: ns::authenticationloginschemapolicy
     description: This component creates a login schema policy 
     properties:
-        name: $parameters.appname + "_factor0_schema_pol"
+        name: $parameters.ug-sb.appname + "_factor0_schema_pol"
         rule: str("true")
         action: $components.loginschema-comp.properties.name
   -
@@ -536,7 +545,7 @@ components:
     type: ns::authenticationloginschemapolicy
     description: This component creates a login schema policy for use with OTP
     properties:
-        name: $parameters.appname + "_factor0_schema_pol"
+        name: $parameters.ug-sb.appname + "_factor0_schema_pol"
         rule: str("true")
         action: $components.loginschema-otp-comp.properties.name
   -
@@ -544,7 +553,7 @@ components:
     type: ns::authenticationvserver
     description: This component creates the AAATM Vserver config entity
     properties:
-       name: $parameters.appname + "_nfactor"
+       name: $parameters.ug-sb.appname + "_nfactor"
        servicetype: "SSL"
        ipv46: 0.0.0.0
        port: 0
@@ -603,7 +612,7 @@ components:
     description: This component creates the aaa policy label for factor1
     condition: $parameters.auth-settings.otp-settings
     properties:
-       labelname: $parameters.appname + "_nfactor_factor1"
+       labelname: $parameters.ug-sb.appname + "_nfactor_factor1"
        loginschema: str("LSCHEMA_INT")
     components:
       - 
@@ -626,7 +635,7 @@ components:
     name: vpnvserver-comp
     type: ns::vpnvserver
     properties:
-      name: str("vpnv_") + $parameters.appname
+      name: str("vpnv_") + $parameters.ug-sb.appname
       servicetype: "SSL"
       ipv46: 0.0.0.0
       port: 0
@@ -662,7 +671,7 @@ components:
     name: csvserver-comp
     type: ns::csvserver
     properties: 
-      name: str("csv_") + $parameters.appname
+      name: str("csv_") + $parameters.ug-sb.appname
       servicetype: "SSL"
       ipv46: $parameters.cs-virtual-ip
       port: 443
