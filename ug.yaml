@@ -558,7 +558,7 @@ components:
        ipv46: 0.0.0.0
        port: 0
        #tcpprofilename: "nstcp_internal_apps"
-       authenticationdomain?: $parameters.auth-domain
+       authenticationdomain?: $parameters.ug-sb.auth-domain
        maxloginattempts?: $parameters.auth-settings.max-login-attempts
        failedlogintimeout?: $parameters.auth-settings.failed-login-timeout 
     components:
@@ -629,8 +629,8 @@ components:
     properties:
       name: "nFactor_for_Gateway"
       authnvsname: $components.auth-vserver-comp.properties.name
-      authenticationhost: $parameters.fqdn
-      authenticationdomain: $parameters.auth-domain
+      authenticationhost: $parameters.ug-sb.fqdn
+      authenticationdomain: $parameters.ug-sb.auth-domain
   -
     name: vpnvserver-comp
     type: ns::vpnvserver
@@ -649,7 +649,7 @@ components:
         name: vpnvserver-certs-bindings-comp
         type: stlb::vserver-certs-binds
         properties:
-          certificates: $parameters.certificates
+          certificates: $parameters.ug-sb.certificates
           vserver-name: $parent.properties.name
       -
         name: vpnvserver-vpnportaltheme-bind-comp
@@ -673,7 +673,7 @@ components:
     properties: 
       name: str("csv_") + $parameters.ug-sb.appname
       servicetype: "SSL"
-      ipv46: $parameters.cs-virtual-ip
+      ipv46: $parameters.ug-sb.cs-virtual-ip
       port: 443
       clttimeout: 900
       httpprofilename: nshttp_default_strict_validation
