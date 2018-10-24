@@ -24,21 +24,16 @@ parameters:
     label: Citrix Unified Gateway 
     description: |
      <a href="https://www.citrix.com/products/citrix-gateway/resources/netscaler-unified-gateway.html" target="_blank"><img src="https://www.citrix.com/content/dam/citrix61/en_us/images/graphics/ns-ugw-sso.png"></a><h1>Citrix ADC Unified Gateway</h1>This stylebook creates a complete Unified Gateway configuration on 12.x with option of MFA via NS OTP.  Created entities include CS VServer, AAATM VServer, VPN VServer, LB VServers for StoreFront in accord with best practices
-
      <ul>
       <li><strong>Pre-Requisites</strong></li>
-       <ul>
-        <li> - Citrix ADC Build 12.0.51.24+</li>
-        <li> - Citrix ADC Advanced or Premium Edition are required (previously Enterprise and Platinum)</li>
-        <li> - If using Workspace App, Citrix ADC Build 12.1 build 49+ and Workspace App 1809+ are required when OTP is enabled</li>
-        <li> - Public facing IP Address and External FQDN</li>
-        <li> - SSL Certificate for FQDN</li>
-        <li> - StoreFront and DDC server ip addresses, protocols, and ports</li>
-       </ul>
+      <li> - Citrix ADC Build 12.0.51.24+</li>
+      <li> - Citrix ADC Advanced or Premium Edition are required (previously Enterprise and Platinum)</li>
+      <li> - If using Workspace App, Citrix ADC Build 12.1 build 49+ and Workspace App 1809+ are required when OTP is enabled</li>
+      <li> - Public facing IP Address and External FQDN</li>
+      <li> - SSL Certificate for FQDN</li>
+      <li> - StoreFront and DDC server ip addresses, protocols, and ports</li>
       <li><strong>Assumptions</strong></li>
-        <ul>
-         <li> - DDC and STA Servers are the same</li>
-        </ul>
+      <li> - DDC and STA Servers are the same</li>
      </ul>
      fields with an * are required
     type: object
