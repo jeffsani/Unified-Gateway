@@ -32,8 +32,6 @@ parameters:
       <li> - Public facing IP Address and External FQDN</li>
       <li> - SSL Certificate for FQDN</li>
       <li> - StoreFront and DDC server ip addresses, protocols, and ports</li>
-      <li><strong>Assumptions</strong></li>
-      <li> - DDC and STA Servers are the same</li>
      </ul>
      fields with an * are required
     type: object
