@@ -14,7 +14,10 @@ import-stylebooks:
     namespace: com.citrix.adc.commontypes
     prefix: cmtypes
     version: "1.0"
-
+  -
+    namespace: com.citrix.adc.stylebooks
+    prefix: stlb
+    version: "1.0"
 parameters:
   -
     name: ug-sb
