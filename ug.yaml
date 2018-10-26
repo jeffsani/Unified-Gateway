@@ -23,7 +23,7 @@ parameters:
     name: ug-sb
     label: Citrix Unified Gateway 
     description: |
-     <a href="https://www.citrix.com/products/citrix-gateway/resources/netscaler-unified-gateway.html" target="_blank"><img src="https://www.citrix.com/content/dam/citrix61/en_us/images/graphics/ns-ugw-sso.png" width="500" height="250"></a><h1>Citrix ADC Unified Gateway</h1>This stylebook creates a complete Unified Gateway configuration on 12.x with option of MFA via NS OTP.  Created entities include CS VServer, AAATM VServer, VPN VServer, LB VServers for StoreFront in accord with best practices
+     <a href="https://www.citrix.com/products/citrix-gateway/resources/netscaler-unified-gateway.html" target="_blank"><img src="https://www.citrix.com/content/dam/citrix61/en_us/images/graphics/ns-ugw-sso.png" width="500" height="250" align="right"></a><h1>Citrix ADC Unified Gateway</h1>This stylebook creates a complete Unified Gateway configuration on 12.x with option of MFA via NS OTP.  Created entities include CS VServer, AAATM VServer, VPN VServer, LB VServers for StoreFront in accord with best practices
      <ul>
       <li><strong>Pre-Requisites</strong></li>
       <li> - Citrix ADC Build 12.0.51.24+</li>
