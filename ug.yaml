@@ -30,7 +30,7 @@ parameters:
       <li> - Citrix ADC Advanced or Premium Edition are required (previously Enterprise and Platinum)</li>
       <li> - If using Workspace App, Citrix ADC Build 12.1 build 49+ and Workspace App 1809+ are required when OTP is enabled</li>
       <li> - Public facing IP Address and External FQDN</li>
-      <li> - SSL Certificate for FQDN</li>
+      <li> - SSL Certificate</li>
       <li> - StoreFront and DDC server ip addresses, protocols, and ports</li>
      </ul>
      fields with an * are required
@@ -40,7 +40,7 @@ parameters:
      -
        name: appname
        label: "Unified Gateway Name"
-       description: "Unified Gateway Application Name"
+       description: "Unified Gateway Application Name - This text will be used when namaing entities created by this StyleBook and also defines the StyleBook Display Name in Citrix ADM"
        type: string
        key: true
        gui:
@@ -128,13 +128,14 @@ parameters:
       - 
         name: base-dn
         label: LDAP Base DN
-        description: The Active Directory LDAP Base Search DN - i.e. ou=MyOU,dc=domain,dc=local
+        description: The Active Directory LDAP Base Search DN
         type: string
+        default: cn=Users,dc=domain,dc=local
         required: true
       -
         name: bind-dn
         label: LDAP Bind DN
-        description: The Active Directory LDAP Bind string for authentication - i.e. ldap-svc-acct@domain.local
+        description: The Active Directory LDAP Bind string for authentication
         type: string
         default: "administrator@domain.local"
         required: true
