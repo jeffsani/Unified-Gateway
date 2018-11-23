@@ -558,7 +558,7 @@ components:
     name: auth-ldap-otp-policy-comp
     type: ns::authenticationldappolicy
     description: This component creates the LDAP OTP Auth Policy config entity
-    condition: $parameters.other-settings.otp-settings
+    condition: $parameters.auth-settings.otp-settings
     properties:
         name: $parameters.ug-sb.appname + "_ldap-otp-pol"
         rule: str("true")
@@ -688,7 +688,7 @@ components:
       servicetype: "SSL"
       ipv46: 0.0.0.0
       port: 0
-      dtls: if-then-else($parameters.other-settings.otp-settings, "ON", "OFF")
+      dtls: if-then-else($parameters.other-settings.sf-edt-proxy, "ON", "OFF")
       loginonce: "ON"
       tcpprofilename: "nstcp_internal_apps"
       authnprofile: $components.authprofile-comp.properties.name
