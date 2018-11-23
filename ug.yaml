@@ -748,16 +748,16 @@ components:
           is-default: true
 outputs:
   -
-    name: sf-monitor-comp
+    name: sf-monitor
     value: $components.sf-monitor-comp
   -
-    name: ddc-monitor-comp
+    name: ddc-monitor
     value: $components.ddc-monitor-comp
   -
-    name: sf-lbvserver-comp
+    name: sf-lbvserver
     value: $components.sf-lbvserver-comp
   -
-    name: ddc-lbvserver-comp
+    name: ddc-lbvserver
     value: $components.ddc-lbvserver-comp
   -
     name: vpn-user-group
@@ -778,7 +778,7 @@ outputs:
     name: auth-vserver
     value: $components.auth-vserver-comp
   -
-    name: authprofile-comp
+    name: authprofile
     value: $components.authprofile-comp
   -
     name: vpnvserver
