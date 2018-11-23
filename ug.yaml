@@ -230,7 +230,22 @@ parameters:
         type: number
         default: 30
         required: true
-      - 
+  -
+    name: other-settings
+    label: Other Options
+    description: |
+     <h2>Additional Settings </h2>
+     These are optional but recommended settings for your configuration and an optimal end user experience.  
+    type: object
+    required: true
+    parameters:
+      -
+        name: nfactor-ssl-profile
+        label: Create SSL FE Profile
+        description: | 
+         <h2>Optimal Unified Gateway SSL Front-End Profile</h2> This profile configures optimal security and functionality settings for Unified Gateway.  This includes SSL behaviors, supported protocols, and secure ciphers. 
+        type: object
+      -
         name: sf-edt-proxy
         label: Enable EDT Proxy Support
         description: |
@@ -242,9 +257,7 @@ parameters:
         name: ica-latency-profile
         label: Create ICA Latency Profile
         description: |
-         <h2>ICA Latency Profile</h2> This is optional but recommended for more accurate analytics in Citrix ADM.  
-         For more information refer to the <a href="https://docs.citrix.com/en-us/netscaler/12/load-balancing/load-balancing-builtin-monitors/monitor-citrix-sf-services.html" |
-         target="_blank">documentation</a>
+         <h2>ICA Latency Profile</h2> This is optional but recommended for more accurate analytics in Citrix ADM.  The ICA Latency Profile metric will tell you what the TCP latency is across all the hops for an ICA connection as evidenced by a round trip of an ICA frame header. For more information refer to the <a href="https://docs.citrix.com/en-us/netscaler/12/load-balancing/load-balancing-builtin-monitors/monitor-citrix-sf-services.html" target="_blank">documentation</a>
         type: object
         parameters:
          -
@@ -288,6 +301,7 @@ components:
     name: ica-latency-comp
     type: ns::icalatencyprofile
     description: This component creates an ICA Latency Profile for use with Citrix ADM
+    condition: $parameters.other-settings.ica-latency-profile
     properties:
       name: str("ica_l7_profile_") + $parameters.ug-sb.appname
       l7latencymonitoring: "ENABLED"
@@ -295,6 +309,23 @@ components:
       l7latencywaittime: $parameters.storefront-settings.ica-latency-profile.l7latencywaittime
       l7latencynotifyinterval: $parameters.storefront-settings.ica-latency-profile.l7latencynotifyinterval
       l7latencymaxnotifycount: $parameters.storefront-settings.ica-latency-profile.l7latencymaxnotifycount
+  -
+    name: ica-action-comp
+    type: ns::icaaction
+    description: This component creates an ICA Action to refernce the created ICA Latency Profile
+    condition: $parameters.other-settings.ica-latency-profile
+    properties:
+       name: str("ica_l7_action_") + $parameters.ug-sb.appname
+       latencyprofilename: $components.ica-latency-comp.properties.name
+  -
+    name: ica-policy-comp
+    type: ns::icapolicy
+    description: This component creates an ICA Policy to reference the created ICA Action
+    condition: $parameters.other-settings.ica-latency-profile
+    properties:
+      name: str("ica_l7_policy_") + $parameters.ug-sb.appname
+      rule: str("true")
+      action:  $components.ica-action-comp.properties.name
   - 
     name: sf-monitor-comp
     type: ns::lbmonitor
@@ -498,7 +529,7 @@ components:
     name: auth-ldap-otp-comp
     type: ns::authenticationldapaction
     description: This component creates the LDAP Auth Action config entity for OTP Auth
-    condition: $parameters.auth-settings.otp-settings
+    condition: $parameters.other-settings.otp-settings
     properties:
         name: $parameters.ug-sb.appname + "_ldap-otp-act"
         serverip: $parameters.auth-settings.server-ip
@@ -527,7 +558,7 @@ components:
     name: auth-ldap-otp-policy-comp
     type: ns::authenticationldappolicy
     description: This component creates the LDAP OTP Auth Policy config entity
-    condition: $parameters.auth-settings.otp-settings
+    condition: $parameters.other-settings.otp-settings
     properties:
         name: $parameters.ug-sb.appname + "_ldap-otp-pol"
         rule: str("true")
@@ -657,7 +688,7 @@ components:
       servicetype: "SSL"
       ipv46: 0.0.0.0
       port: 0
-      dtls: if-then-else($parameters.storefront-settings.ddc-svc-protocol, "ON", "OFF")
+      dtls: if-then-else($parameters.other-settings.otp-settings, "ON", "OFF")
       loginonce: "ON"
       tcpprofilename: "nstcp_internal_apps"
       authnprofile: $components.authprofile-comp.properties.name
@@ -673,8 +704,8 @@ components:
         name: vpnvserver-vpnportaltheme-bind-comp
         type: ns::vpnvserver_vpnportaltheme_binding
         properties:
-            name: $parent.properties.name
-            portaltheme: RfWebUI
+          name: $parent.properties.name
+          portaltheme: RfWebUI
       -
         name: vpnvserver-sta-bindings-comp
         type: ns::vpnvserver_staserver_binding   
@@ -685,6 +716,15 @@ components:
           name: $parent.properties.name
           staaddresstype: "IPV4"
           staserver: if-then-else($parameters.storefront-settings.ddc-svc-protocol == "SSL" or $parameters.storefront-settings.ddc-svc-protocol == "SSL_BRIDGE", str("https://") + str($server.ip) + str(":") + str($server.port), str("http://") + str($server.ip) + str(":") + str($server.port))
+      - 
+        name: vpnvserver-ica-binding-comp
+        type: ns::vpnvserver_icapolicy_binding
+        condition: $parameters.other-settings.ica-latency-profile
+        properties:
+          priority: 100
+          policy: $components.ica-policy-comp.properties.name
+          bindpoint: ICA_REQUEST
+          name: $parent.properties.name
   -
     name: csvserver-comp
     type: ns::csvserver
@@ -746,3 +786,15 @@ outputs:
   -
     name: csvserver
     value: $components.csvserver-comp
+  - 
+    name: ica-latency-profile
+    condition: $parameters.other-settings.ica-latency-profile
+    value: $components.ica-latency-profile
+  - 
+    name: ica-action-comp
+    condition: $parameters.other-settings.ica-latency-profile
+    value: $components.ica-action-comp
+  -
+    name: ica-policy-comp
+    condition: $parameters.other-settings.ica-latency-profile
+    value: $components.ica-policy-comp    
