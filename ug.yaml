@@ -789,7 +789,7 @@ outputs:
   - 
     name: ica-latency-profile
     condition: $parameters.other-settings.ica-latency-profile
-    value: $components.ica-latency-profile
+    value: $components.ica-latency-comp
   - 
     name: ica-action-comp
     condition: $parameters.other-settings.ica-latency-profile
