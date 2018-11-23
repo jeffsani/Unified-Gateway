@@ -529,7 +529,7 @@ components:
     name: auth-ldap-otp-comp
     type: ns::authenticationldapaction
     description: This component creates the LDAP Auth Action config entity for OTP Auth
-    condition: $parameters.other-settings.otp-settings
+    condition: $parameters.auth-settings.otp-settings
     properties:
         name: $parameters.ug-sb.appname + "_ldap-otp-act"
         serverip: $parameters.auth-settings.server-ip
