@@ -306,7 +306,7 @@ components:
       name: str("ica_l7_profile_") + $parameters.ug-sb.appname
       l7latencymonitoring: "ENABLED"
       l7latencythresholdfactor: $parameters.other-settings.ica-latency-profile.l7latencythresholdfactor
-      l7latencywaittime: $parameters.storefront-settings.ica-latency-profile.l7latencywaittime
+      l7latencywaittime: $parameters.other-settings.ica-latency-profile.l7latencywaittime
       l7latencynotifyinterval: $parameters.other-settings.ica-latency-profile.l7latencynotifyinterval
       l7latencymaxnotifycount: $parameters.other-settings.ica-latency-profile.l7latencymaxnotifycount
   -
