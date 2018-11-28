@@ -229,7 +229,7 @@ parameters:
         description: Idle timeout for Web Session - This shoud match what is configured in StoreFront
         type: number
         default: 30
-        required: true
+        required: false
   -
     name: other-settings
     label: Other Options
@@ -476,7 +476,7 @@ components:
       icaproxy: "ON"
       wihome: str("http://1.1.1.1/") + $parameters.storefront-settings.sf-name
       storefronturl: str("http://1.1.1.1/")
-      sesstimeout: $parameters.storefront-settings.session-timeout
+      sesstimeout?: $parameters.storefront-settings.session-timeout
   -
     name: vpn-session-policy-Receiver-comp
     type: ns::vpnsessionpolicy
