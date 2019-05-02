@@ -5,7 +5,7 @@ version: "1.0"
 display-name: "Unified Gateway"
 description: "This stylebook creates a complete Unified Gateway configuration on Citrix ADC 12.x with option of MFA via NS OTP.  Created entities include CS VServer, AAATM VServer, VPN VServer, LB VServers for StoreFront/DDC with monitors, and associated policies."
 schema-version: "1.0"
-import-stylebooks: 
+import-stylebooks:
   -
     namespace: netscaler.nitro.config
     prefix: ns
@@ -21,7 +21,7 @@ import-stylebooks:
 parameters:
   -
     name: ug-sb
-    label: Citrix Unified Gateway 
+    label: Citrix Unified Gateway
     description: |
      <a href="https://www.citrix.com/products/citrix-gateway/resources/netscaler-unified-gateway.html" target="_blank"><img src="https://www.citrix.com/content/dam/citrix61/en_us/images/graphics/ns-ugw-sso.png" width="500" height="250" align="right"></a><h1>Citrix ADC Unified Gateway</h1>This stylebook creates a complete Unified Gateway configuration on 12.x with option of MFA via NS OTP.  Created entities include CS VServer, AAATM VServer, VPN VServer, LB VServers for StoreFront in accord with best practices
      <ul>
@@ -66,7 +66,7 @@ parameters:
        type: string
        default: "domain.com"
        required: true
-     -      
+     -
        name: certificates
        label: "SSL Certificate Settings"
        description: "Certificates for this vpn virtual server"
@@ -76,8 +76,8 @@ parameters:
     label: nFactor Authentication Settings
     description: |
      <h2>LDAP Authentication</h2>
-     These inputs define an LDAP authentication with optional NS OTP MFA. You will need to know the user and password of a bind account for LDAP 
-     that has sufficient priviledges to access user attributes.  Please refer to the Citrix documentation for more information - 
+     These inputs define an LDAP authentication with optional NS OTP MFA. You will need to know the user and password of a bind account for LDAP
+     that has sufficient priviledges to access user attributes.  Please refer to the Citrix documentation for more information -
      <a href="https://support.citrix.com/article/CTX108876" target="_blank">How to Configure LDAP Authentication on NetScaler or NetScaler Gateway</a>
     type: object
     required: true
@@ -125,7 +125,7 @@ parameters:
         type: number
         default: 1
         required: true
-      - 
+      -
         name: base-dn
         label: LDAP Base DN
         description: The Active Directory LDAP Base Search DN
@@ -145,7 +145,7 @@ parameters:
         description: The Active Directory LDAP Bind DN Password string for authentication
         type: password
         required: true
-      - 
+      -
         name: otp-settings
         label: Multi-factor Authentication
         description: Enable or disable multi-factor auth with built-in NS OTP
@@ -163,7 +163,7 @@ parameters:
     label: StoreFront Settings
     description: |
      <h2>Citrix Store Details</h2>
-     These inputs are required for the StoreFront and DDC load balancing components. Please refer to the Citrix documentation 
+     These inputs are required for the StoreFront and DDC load balancing components. Please refer to the Citrix documentation
      that explains the requirements and options - <a href="https://docs.citrix.com/en-us/storefront/current-release/integrate-with-netscaler-and-netscaler-gateway/load-balancing-with-netscaler.html" target="_blank">
      StoreFront documentation</a>
     type: object
@@ -220,7 +220,7 @@ parameters:
         name: sf-monitor-acctsvcs
         label: Monitor Account Services
         description: |
-         Enable or disable StoreFront Account Services Monitoring - this is optional but recommended.  For more information refer to the 
+         Enable or disable StoreFront Account Services Monitoring - this is optional but recommended.  For more information refer to the
          <a href="https://docs.citrix.com/en-us/netscaler/12/load-balancing/load-balancing-builtin-monitors/monitor-citrix-sf-services.html" target="_blank">documentation</a>
         type: object
       -
@@ -235,25 +235,25 @@ parameters:
     label: Other Options
     description: |
      <h2>Additional Settings </h2>
-     These are optional but recommended settings for your configuration and an optimal end user experience.  
+     These are optional but recommended settings for your configuration and an optimal end user experience.
     type: object
     required: true
     parameters:
       -
         name: nfactor-ssl-profile
         label: Create SSL FE Profile
-        description: | 
-         <h2>Optimal Unified Gateway SSL Front-End Profile</h2> This profile configures optimal security and functionality settings for Unified Gateway.  This includes SSL behaviors, supported protocols, and secure ciphers. 
+        description: |
+         <h2>Optimal Unified Gateway SSL Front-End Profile</h2> This profile configures optimal security and functionality settings for Unified Gateway.  This includes SSL behaviors, supported protocols, and secure ciphers.
         type: object
       -
         name: sf-edt-proxy
         label: Enable EDT Proxy Support
         description: |
-         <h2>HDX Enlightened Data Transport</h2> This is a recommended setting and required if you want to support EDT Proxy through Citrix Gateway. For more information refer to the 
-         <a href="https://docs.citrix.com/en-us/netscaler-gateway/12-1/hdx-enlightened-data-transport-support.html" 
+         <h2>HDX Enlightened Data Transport</h2> This is a recommended setting and required if you want to support EDT Proxy through Citrix Gateway. For more information refer to the
+         <a href="https://docs.citrix.com/en-us/netscaler-gateway/12-1/hdx-enlightened-data-transport-support.html"
          target="_blank">EDT Proxy documentation</a>
         type: object
-      -  
+      -
         name: ica-latency-profile
         label: Create ICA Latency Profile
         description: |
@@ -263,7 +263,7 @@ parameters:
          -
           name: l7latencythresholdfactor
           label: L7 Latency Threshold Factor
-          description: Threshold in ms for when condition should be triggered 
+          description: Threshold in ms for when condition should be triggered
           type: number
           default: 125
           required: true
@@ -277,7 +277,7 @@ parameters:
          -
           name: l7latencynotifyinterval
           label: L7 Latency Notify Interval
-          description: Time Period in s during which notification is sent 
+          description: Time Period in s during which notification is sent
           type: number
           default: 60
           required: true
@@ -297,7 +297,7 @@ components:
       action: enable
     properties:
         feature: ["lb", "cs", "aaa", "sslvpn"]
-  -  
+  -
     name: ica-latency-comp
     type: ns::icalatencyprofile
     description: This component creates an ICA Latency Profile for use with Citrix ADM
@@ -326,10 +326,10 @@ components:
       name: str("ica_l7_policy_") + $parameters.ug-sb.appname
       rule: str("true")
       action:  $components.ica-action-comp.properties.name
-  - 
+  -
     name: sf-monitor-comp
     type: ns::lbmonitor
-    description: This component creates an lb monitor for the StoreFront service group.  This assumes the default service monitor is listening on port 8000 
+    description: This component creates an lb monitor for the StoreFront service group.  This assumes the default service monitor is listening on port 8000
     properties:
       monitorname: str("mon_sf_") + $parameters.ug-sb.appname
       type: "STOREFRONT"
@@ -337,7 +337,7 @@ components:
       dispatcherport: 8000
       storefrontacctservice: if-then-else($parameters.storefront-settings.sf-monitor-acctsvcs, "YES", "NO")
       secure: if-then-else($parameters.storefront-settings.sf-svc-protocol == "SSL" or $parameters.storefront-settings.sf-svc-protocol == "SSL_BRIDGE", "YES", "NO")
-  - 
+  -
     name: ddc-monitor-comp
     type: ns::lbmonitor
     description: This component creates an lb monitor for the DDC service group without an account logon check
@@ -345,10 +345,10 @@ components:
       monitorname: str("mon_ddc_") + $parameters.ug-sb.appname
       type: "CITRIX-XD-DDC"
       secure: if-then-else($parameters.storefront-settings.ddc-svc-protocol == "SSL_BRIDGE", "YES", "NO")
-  - 
+  -
     name: sf-lbvserver-comp
     type: ns::lbvserver
-    properties: 
+    properties:
       name: str("lbv_sf_") + $parameters.ug-sb.appname
       servicetype: HTTP
       ipv46: 1.1.1.1
@@ -356,19 +356,19 @@ components:
       lbmethod: LEASTCONNECTION
       persistencetype: SOURCEIP
       timeout: 0
-    components: 
-      - 
+    components:
+      -
         name: sf-servicegroup-comp
-        type: ns::servicegroup 
+        type: ns::servicegroup
         condition: $parameters.storefront-settings.sf-servers
-        properties: 
+        properties:
           servicegroupname: str("svcg_") + $parameters.ug-sb.appname
           servicetype: $parameters.storefront-settings.sf-svc-protocol
-        components: 
-          - 
+        components:
+          -
             name: sf-lbvserver-svg-binding
             type: ns::lbvserver_servicegroup_binding
-            properties: 
+            properties:
               name: $parent.parent.properties.name
               servicegroupname: $parent.properties.servicegroupname
           -
@@ -380,25 +380,25 @@ components:
             properties:
               name: str($server.ip)
               ipaddress: $server.ip
-          - 
+          -
             name: sf-svg-ip-members
             type: ns::servicegroup_servicegroupmember_binding
             repeat: $parameters.storefront-settings.sf-servers
             repeat-item: server
-            properties: 
+            properties:
               servicegroupname: $parent.properties.servicegroupname
               ip: $server.ip
               port: $server.port
-          - 
+          -
             name: sf-lbmonitor-binding-comp
             type: ns::servicegroup_lbmonitor_binding
             properties:
               servicegroupname: $parent.parent.properties.name
               monitor_name: $components.sf-monitor-comp.properties.monitorname
-  - 
+  -
     name: ddc-lbvserver-comp
     type: ns::lbvserver
-    properties: 
+    properties:
       name: str("lbv_ddc_") + $parameters.ug-sb.appname
       servicetype: HTTP
       ipv46: 1.1.1.2
@@ -406,19 +406,19 @@ components:
       lbmethod: LEASTCONNECTION
       persistencetype: COOKIEINSERT
       timeout: 0
-    components: 
-      - 
+    components:
+      -
         name: ddc-servicegroup-comp
-        type: ns::servicegroup 
+        type: ns::servicegroup
         condition: $parameters.storefront-settings.sf-servers
-        properties: 
+        properties:
           servicegroupname: str("svcg_") + $parameters.ug-sb.appname
           servicetype: $parameters.storefront-settings.ddc-svc-protocol
-        components: 
-          - 
+        components:
+          -
             name: ddc-lbvserver-svg-binding
             type: ns::lbvserver_servicegroup_binding
-            properties: 
+            properties:
               name: $parent.parent.properties.name
               servicegroupname: $parent.properties.servicegroupname
           -
@@ -430,12 +430,12 @@ components:
             properties:
               name: str($server.ip)
               ipaddress: $server.ip
-          - 
+          -
             name: ddc-svg-ip-members
             type: ns::servicegroup_servicegroupmember_binding
             repeat: $parameters.storefront-settings.ddc-servers
             repeat-item: server
-            properties: 
+            properties:
               servicegroupname: $parent.properties.servicegroupname
               ip: $server.ip
               port: $server.port
@@ -494,17 +494,17 @@ components:
       weight: 10
     components:
           -
-           name: aaagroup_vvpn-session-policy-RfW-binding-comp 
+           name: aaagroup_vvpn-session-policy-RfW-binding-comp
            type: ns::aaagroup_vpnsessionpolicy_binding
            properties:
-              groupname: $parent.properties.groupname 
+              groupname: $parent.properties.groupname
               policy: $components.vpn-session-policy-RfW-comp.properties.name
               priority: 100
           -
            name: aaagroup_session-policy-Receiver-binding-comp
            type: ns::aaagroup_vpnsessionpolicy_binding
            properties:
-              groupname: $parent.properties.groupname 
+              groupname: $parent.properties.groupname
               policy: $components.vpn-session-policy-Receiver-comp.properties.name
               priority: 200
   -
@@ -525,7 +525,7 @@ components:
         ldapbase: $parameters.auth-settings.base-dn
         ldapbinddn: $parameters.auth-settings.bind-dn
         ldapbinddnpassword: $parameters.auth-settings.bind-dn-password
-  - 
+  -
     name: auth-ldap-otp-comp
     type: ns::authenticationldapaction
     description: This component creates the LDAP Auth Action config entity for OTP Auth
@@ -581,10 +581,10 @@ components:
         name: $parameters.ug-sb.appname + "_factor0_schema"
         authenticationschema: str("/nsconfig/loginschema/LoginSchema/DualAuth.xml")
         ssocredentials: "YES"
-  -          
+  -
     name: loginschema-policy-comp
     type: ns::authenticationloginschemapolicy
-    description: This component creates a login schema policy 
+    description: This component creates a login schema policy
     properties:
         name: $parameters.ug-sb.appname + "_factor0_schema_pol"
         rule: str("true")
@@ -609,7 +609,7 @@ components:
        #tcpprofilename: "nstcp_internal_apps"
        authenticationdomain?: $parameters.ug-sb.auth-domain
        maxloginattempts?: $parameters.auth-settings.max-login-attempts
-       failedlogintimeout?: $parameters.auth-settings.failed-login-timeout 
+       failedlogintimeout?: $parameters.auth-settings.failed-login-timeout
     components:
       -
        name: authenticationvserver-vpnportaltheme-bind-comp
@@ -653,9 +653,9 @@ components:
        condition: $parameters.auth-settings.otp-settings
        properties:
            name: $parent.properties.name
-           policy: $components.loginschema-otp-policy-comp.properties.name 
+           policy: $components.loginschema-otp-policy-comp.properties.name
            priority: 100
-  - 
+  -
     name: auth-label-factor1
     type: ns::authenticationpolicylabel
     description: This component creates the aaa policy label for factor1
@@ -664,7 +664,7 @@ components:
        labelname: $parameters.ug-sb.appname + "_nfactor_factor1"
        loginschema: str("LSCHEMA_INT")
     components:
-      - 
+      -
         name: auth-label-policy-bindings-comp
         type: ns::authenticationpolicylabel_authenticationpolicy_binding
         description: This component binds the LDAP+OTP policy to the label
@@ -708,15 +708,15 @@ components:
           portaltheme: RfWebUI
       -
         name: vpnvserver-sta-bindings-comp
-        type: ns::vpnvserver_staserver_binding   
+        type: ns::vpnvserver_staserver_binding
         repeat: $parameters.storefront-settings.ddc-servers
         repeat-condition: $server.add-server
         repeat-item: server
-        properties: 
+        properties:
           name: $parent.properties.name
           staaddresstype: "IPV4"
           staserver: if-then-else($parameters.storefront-settings.ddc-svc-protocol == "SSL" or $parameters.storefront-settings.ddc-svc-protocol == "SSL_BRIDGE", str("https://") + str($server.ip) + str(":") + str($server.port), str("http://") + str($server.ip) + str(":") + str($server.port))
-      - 
+      -
         name: vpnvserver-ica-binding-comp
         type: ns::vpnvserver_icapolicy_binding
         condition: $parameters.other-settings.ica-latency-profile
@@ -728,7 +728,7 @@ components:
   -
     name: csvserver-comp
     type: ns::csvserver
-    properties: 
+    properties:
       name: str("csv_") + $parameters.ug-sb.appname
       servicetype: "SSL"
       ipv46: $parameters.ug-sb.cs-virtual-ip
@@ -737,11 +737,11 @@ components:
       httpprofilename: nshttp_default_strict_validation
       tcpprofilename: nstcp_default_XA_XD_profile
       comment: "Content Switching VServer for Unified Gateway"
-    components: 
-      - 
+    components:
+      -
         name: default-cs-vpnvserver-bind-comp
         type: stlb::cs-vserver-bind
-        properties: 
+        properties:
           csvserver-name: $parent.properties.name
           vserver-name: $components.vpnvserver-comp.properties.name
           vserver-type: VPNVSERVER
@@ -786,15 +786,15 @@ outputs:
   -
     name: csvserver
     value: $components.csvserver-comp
-  - 
+  -
     name: ica-latency-profile
     condition: $parameters.other-settings.ica-latency-profile
     value: $components.ica-latency-comp
-  - 
+  -
     name: ica-action-comp
     condition: $parameters.other-settings.ica-latency-profile
     value: $components.ica-action-comp
   -
     name: ica-policy-comp
     condition: $parameters.other-settings.ica-latency-profile
-    value: $components.ica-policy-comp    
+    value: $components.ica-policy-comp
